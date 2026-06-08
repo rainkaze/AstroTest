@@ -20,7 +20,11 @@ const publishDate = frontmatter.pubDate
         {publishDate && <span> · 发布于：{publishDate}</span>}
       </p>
 
-      {frontmatter.description && <p class="post-description">{frontmatter.description}</p>}
+      {
+        frontmatter.description && (
+          <p class="post-description">{frontmatter.description}</p>
+        )
+      }
 
       {
         frontmatter.image?.url && (
