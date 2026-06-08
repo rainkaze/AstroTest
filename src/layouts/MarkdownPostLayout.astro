@@ -1,0 +1,101 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+
+const publishDate = frontmatter.pubDate
+  ? new Intl.DateTimeFormat("zh-CN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(new Date(frontmatter.pubDate))
+  : "";
+---
+
+<BaseLayout pageTitle={frontmatter.title}>
+  <article class="post">
+    <header class="post-header">
+      <p class="post-meta">
+        作者：{frontmatter.author}
+        {publishDate && <span> · 发布于：{publishDate}</span>}
+      </p>
+
+      {frontmatter.description && <p class="post-description">{frontmatter.description}</p>}
+
+      {
+        frontmatter.image?.url && (
+          <img
+            class="post-image"
+            src={frontmatter.image.url}
+            alt={frontmatter.image.alt || frontmatter.title}
+            loading="lazy"
+          />
+        )
+      }
+
+      {
+        frontmatter.tags?.length > 0 && (
+          <ul class="post-tags" aria-label="文章标签">
+            {frontmatter.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="post-content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    padding-bottom: 2rem;
+  }
+
+  .post-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-meta {
+    color: #5f6380;
+    font-size: 0.95rem;
+  }
+
+  .post-description {
+    color: #333652;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .post-image {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 1rem 0;
+    list-style: none;
+  }
+
+  .post-tags li {
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    color: #0d0950;
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  :global(.post-content h2) {
+    margin-top: 2rem;
+  }
+</style>
