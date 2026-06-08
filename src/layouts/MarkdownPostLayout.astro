@@ -40,7 +40,7 @@ const publishDate = frontmatter.pubDate
       {
         frontmatter.tags?.length > 0 && (
           <ul class="post-tags" aria-label="文章标签">
-            {frontmatter.tags.map((tag) => (
+            {frontmatter.tags.map((tag: unknown) => (
               <li>{tag}</li>
             ))}
           </ul>
